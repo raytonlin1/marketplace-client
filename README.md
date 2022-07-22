@@ -1,46 +1,56 @@
-# Getting Started with Create React App
+# Marketplace
+> This marketplace app allows users to log in and create, update and delete items that they want to buy or sell.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![NPM Version][npm-image]][npm-url]
+[![Build Status][travis-image]][travis-url]
+[![Downloads Stats][npm-downloads]][npm-url]
 
-## Available Scripts
+![](header.png)
 
-In the project directory, you can run:
+## Installation
 
-### `npm start`
+Copy the github repository.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Development setup
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Copy the github repository to an IDE like VS Code, and run npm install
+while in the main folder. Then, run npm start.
 
-### `npm test`
+```
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Release History
+* 0.1.1
+    * ADD: Added proper Firebase usage
+* 0.1.0
+    * The first proper release
+    * CHANGE: Update docs (module code remains unchanged)
+    * ADD: Added authentication
+    * FIX: Fixed various bugs
+* 0.0.1
+    * Work in progress
 
-### `npm run build`
+## Meta
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Rayton Lin – [@uwaterloo](https://twitter.com/uwaterloo) – raytonlin@gmail.com
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Distributed under the MIT license. See ``LICENSE`` for more information.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[https://github.com/raytonlin1/request](https://github.com/raytonlin1/)
 
-### `npm run eject`
+## Contributing
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+1. Fork it (<https://github.com/raytonlin1/marketplace-client/fork>)
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<!-- Markdown link & img dfn's -->
+[npm-image]: https://img.shields.io/npm/v/datadog-metrics.svg?style=flat-square
+[npm-url]: https://npmjs.org/package/datadog-metrics
+[npm-downloads]: https://img.shields.io/npm/dm/datadog-metrics.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
+[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
+[wiki]: https://github.com/yourname/yourproject/wiki
