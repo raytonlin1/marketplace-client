@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify'
 import {Link, useNavigate} from 'react-router-dom'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import {ReactComponent as ArrowRightIcon} from '../assets/svg/keyboardArrowRightIcon.svg'
@@ -32,7 +33,7 @@ function SignIn() {
       }
     } catch (error) {
       if (error instanceof Error) {
-        console.log(error)
+        toast.error('Incorrect username/password');
       }
     }
   };
