@@ -4,6 +4,8 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'react-toastify'
+import arrowRight from '../assets/svg/keyboardArrowRightIcon.svg'
+import homeIcon from '../assets/svg/homeIcon.svg'
 
 type User = {
   name?: string;
@@ -13,7 +15,7 @@ type User = {
 function Profile() {
   const [user, setUser] : [User, any] = useState({});
   var { name, email } = user;
-  const [changeDetails, setChangeDetails] = useState(false);
+  const [changeDetails, setChangeDetails] = useState<boolean>(false);
 
   const auth = getAuth();
   useEffect(() => {
@@ -25,7 +27,7 @@ function Profile() {
         });
       }
     })
-  },[])
+  },[auth])
 
   const navigate = useNavigate();
 
@@ -99,6 +101,12 @@ function Profile() {
           </form>
 
         </div>
+
+        <Link to='/create-listing' className='createListing'>
+          <img src={homeIcon} alt='home' />
+          <p>Sell or rent out an item</p>
+          <img src={arrowRight} alt="arrow right" />
+        </Link>
       </main>
     </div>
   );

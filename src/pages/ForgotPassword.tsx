@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { ReactComponent as ArrowRightIcon } from '../assets/svg/keyboardArrowRightIcon.svg'
 
 function ForgotPassword() {
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState<string>('')
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
   }

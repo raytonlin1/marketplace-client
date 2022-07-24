@@ -15,7 +15,7 @@ type Listing = {
   }
 }
 
-function Offers() {
+function Category() {
   const [listings, setListings] = useState<Listing[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -28,7 +28,7 @@ function Offers() {
 
         const q = query(
           listingsRef, 
-          where('offer', '==', true), 
+          where('type', '==', params.categoryName), 
           orderBy('timestamp','desc'),
           limit(10)
         )
@@ -54,7 +54,7 @@ function Offers() {
     }
 
     fetchListings()
-  })
+  }, [params.categoryName])
 
   return (
     <div className='category'>
@@ -72,10 +72,10 @@ function Offers() {
               <ListingItem listing={listing.data} id={listing.id} />
             )) }
           </ul>
-        </main>) : (<p>There are no current offers.</p>)
+        </main>) : (<p>No listings for {params.categoryName}</p>)
       }
     </div>
   )
 }
 
-export default Offers
+export default Category
