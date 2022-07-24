@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react"
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import Spinner from "../components/Spinner"
+import { toast } from "react-toastify"
 
 
 function CreateListing() {
@@ -19,7 +20,7 @@ function CreateListing() {
     offer: false,
     regularPrice: 0,
     discountedPrice: 0,
-    images: {},
+    images: [],
     latitude: 0,
     longitude: 0,
     userRef: ''
@@ -47,8 +48,51 @@ function CreateListing() {
     }
   }, [isMounted])
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setLoading(true)
+    if (discountedPrice >= regularPrice) {
+      toast.error('Discounted Price must be less than Regular Price')
+      setLoading(false)
+      return
+    }
+
+    if (images!.length > 6) {
+      setLoading(false)
+      toast.error('Only up to 6 images can be saved')
+      return
+    }
+
+    let geolocation = {
+      lat: 0,
+      lng: 0
+    }
+    let location 
+
+    if (geoEnabled) {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?
+        address=${address}&
+        key=${process.env.REACT_APP_GEOCODE_API_KEY}`
+      )
+      const data = await response.json()
+
+      geolocation.lat = data.results[0]?.geometry.location.lat ?? 0
+      geolocation.lng = data.results[0]?.geometry.location.lng ?? 0
+      location = data.status === 'ZERO_RESULTS' ? undefined : data.results[0]?.formatted_address
+      
+      if (location === undefined || location.includes('undefined')) {
+        setLoading(false)
+        toast.error('Please enter a correct address')
+        return
+      }
+    } else {
+      geolocation.lat = latitude
+      geolocation.lng = longitude
+      location = address
+    }
+
+    setLoading(false)
   }
 
   const onMutate = (e: any) => {
@@ -120,7 +164,7 @@ function CreateListing() {
             value={name}
             onChange={onMutate}
             maxLength={32}
-            minLength={10}
+            minLength={1}
             required
           />
 
@@ -135,7 +179,7 @@ function CreateListing() {
                 id='bedrooms'
                 value={bedrooms}
                 onChange={onMutate}
-                min={1}
+                min={0}
                 max={50}
                 required
               />
@@ -150,7 +194,7 @@ function CreateListing() {
                 id='bathrooms'
                 value={bathrooms}
                 onChange={onMutate}
-                min={1}
+                min={0}
                 max={50}
                 required
               />
@@ -282,7 +326,7 @@ function CreateListing() {
               id='regularPrice'
               value={regularPrice}
               onChange={onMutate}
-              min={50}
+              min={0}
               max={750000000}
               required
             />
@@ -300,7 +344,7 @@ function CreateListing() {
                 id='discountedPrice'
                 value={discountedPrice}
                 onChange={onMutate}
-                min='50'
+                min='0'
                 max='750000000'
                 required={offer}
               />
