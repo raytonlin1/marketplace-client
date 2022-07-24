@@ -4,15 +4,33 @@ import { useNavigate } from 'react-router-dom'
 import Spinner from "../components/Spinner"
 import { toast } from "react-toastify"
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { db } from '../firebase.config'
 import { v4 as uuidv4 } from 'uuid'
 
+interface formData {
+  type: string,
+  name: string,
+  bedrooms: number,
+  bathrooms: number,
+  parking: boolean,
+  furnished: boolean,
+  address?: string,
+  offer: boolean,
+  regularPrice: number,
+  discountedPrice?: number,
+  images?: any,
+  latitude: number,
+  longitude: number,
+  location?: string
+  userRef: string
+}
 
 function CreateListing() {
   const [geoEnabled, setGeoEnabled] = useState(true)
   const [loading, setLoading] = useState(false)
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<formData>({
     type: 'rent',
     name: '',
     bedrooms: 0,
@@ -54,7 +72,7 @@ function CreateListing() {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
-    if (offer && discountedPrice >= regularPrice) {
+    if (offer && discountedPrice! >= regularPrice) {
       toast.error('Discounted Price must be less than Regular Price')
       setLoading(false)
       return
@@ -90,7 +108,6 @@ function CreateListing() {
     } else {
       geolocation.lat = latitude
       geolocation.lng = longitude
-      location = address
     }
 
     const storeImage = async (image: any) => {
@@ -139,10 +156,23 @@ function CreateListing() {
       }
     )
     
+    const formDataCopy = {
+      ...formData,
+      imgUrls,
+      geolocation,
+      timestamp: serverTimestamp()
+    }
 
-    console.log(imgUrls)
+    delete formDataCopy.images
+    delete formDataCopy.address
+    formDataCopy.location = address
+    !formDataCopy.offer && delete formDataCopy.discountedPrice
+
+    const docRef = await addDoc(collection(db, 'listings'), formDataCopy)
 
     setLoading(false)
+    toast.success('Listing saved')
+    navigate(`/category/${formDataCopy.type}/${docRef.id}`)
   }
 
   const onMutate = (e: any) => {
