@@ -401,7 +401,14 @@ function CreateListing() {
           }
 
           <div>
-            <label className='formLabel'>Price</label>
+          <label className='formLabel'>
+              Price (in Dollars
+              {type === 'rent' ? (
+                ' / Month)'
+              ) : (
+                ')'
+              )}
+            </label>
             <input
               className='formInputSmall'
               type='number'
@@ -412,9 +419,7 @@ function CreateListing() {
               max={750000000}
               required
             />
-            {type === 'rent' && (
-              <p className="formPriceText">Dollars / Month</p>
-            )}
+            
           </div>
 
           {offer && (
