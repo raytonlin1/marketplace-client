@@ -35,9 +35,24 @@ function Listing() {
     return <Spinner />
   }
 
+  const displayImage = (imgUrls: string[]) => {
+    return (
+      <div>
+        {imgUrls.map((url: string, index: number) => {
+          return (<img src={imgUrls[index]} alt='Image'
+          className='categoryListingImg'/>)
+        })}
+      </div>
+    )
+  }
+
   return (
     <main>
-      {/* Slider */}
+      {
+        <div>
+          {displayImage(listing!.imgUrls!)}
+        </div>
+      }
       
       <div className="shareIconDiv" onClick={() => {
         navigator.clipboard.writeText(window.location.href)

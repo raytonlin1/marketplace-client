@@ -17,7 +17,8 @@ type Listing = {
 
 function Offers() {
   const [listings, setListings] = useState<Listing[]>([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [lastFetchedListing, setLastFetchedListing] = useState<any>(null)
 
   const params = useParams()
 
@@ -34,6 +35,9 @@ function Offers() {
         )
 
         const querySnap = await getDocs(q)
+
+        const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+        setLastFetchedListing(lastVisible)
 
         const listings : Listing[] = []
 
@@ -54,7 +58,42 @@ function Offers() {
     }
 
     fetchListings()
-  })
+  }, [params.categoryName])
+
+  const onFetchMoreListings = async () => {
+    try {
+      const listingsRef = collection(db, 'listings')
+
+      const q = query(
+        listingsRef, 
+        where('offer', '==', true), 
+        orderBy('timestamp','desc'),
+        startAfter(lastFetchedListing),
+        limit(10)
+      )
+
+      const querySnap = await getDocs(q)
+
+      const lastVisible = querySnap.docs[querySnap.docs.length - 1]
+      setLastFetchedListing(lastVisible)
+
+      const listings : Listing[] = []
+
+      querySnap.forEach((doc) => {
+        return listings.push({
+          id: doc.id,
+          data: doc.data()
+        })
+      })
+
+      setListings((prevState) => [...prevState, ...listings])
+      setLoading(false)
+
+
+    } catch (error) {
+      toast.error('Could not fetch more listings')
+    }
+  }
 
   return (
     <div className='category'>
